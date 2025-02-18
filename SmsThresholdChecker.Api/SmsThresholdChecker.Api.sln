@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsThresholdChecker.Api", "SmsThresholdChecker.Api.csproj", "{D299731B-9612-43A5-BA5F-D47E3430C543}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsThresholdChecker.Api.Tests", "..\SmsThresholdChecker.Api.Tests\SmsThresholdChecker.Api.Tests.csproj", "{401C4C37-D68C-4762-9BDD-B1CBA9BE27B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D299731B-9612-43A5-BA5F-D47E3430C543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D299731B-9612-43A5-BA5F-D47E3430C543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D299731B-9612-43A5-BA5F-D47E3430C543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{401C4C37-D68C-4762-9BDD-B1CBA9BE27B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{401C4C37-D68C-4762-9BDD-B1CBA9BE27B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{401C4C37-D68C-4762-9BDD-B1CBA9BE27B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{401C4C37-D68C-4762-9BDD-B1CBA9BE27B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
