@@ -14,12 +14,54 @@ namespace SmsThresholdChecker.Api.Tests
         }
 
         [Fact]
+        public async Task CanSendSmsAsync_UnderLimits_ReturnsTrue()
+        {
+            var fixedTime = new DateTime(2024, 1, 1, 12, 0, 0);
+            var timeProvider = new TestTimeProvider { UtcNow = fixedTime };
+            var rateLimiter = new SmsRateLimiter(1, 1, TimeSpan.FromHours(1), timeProvider);
+            Assert.True(await rateLimiter.CanSendSmsAsync("1111111111"));
+        }
+
+        [Fact]
+        public async Task CanSendSmsAsync_ExceedPerNumberLimit_ReturnsFalse()
+        {
+            var fixedTime = new DateTime(2024, 1, 1, 12, 0, 0);
+            var timeProvider = new TestTimeProvider { UtcNow = fixedTime };
+            var rateLimiter = new SmsRateLimiter(1, 100, TimeSpan.FromHours(1), timeProvider);
+            Assert.True(await rateLimiter.CanSendSmsAsync("1111111111"));
+            Assert.False(await rateLimiter.CanSendSmsAsync("1111111111"));
+        }
+
+        [Fact]
+        public async Task CanSendSmsAsync_AfterWindowReset_AllowsAgain()
+        {
+            var fixedTime = new DateTime(2024, 1, 1, 12, 0, 0);
+            var timeProvider = new TestTimeProvider { UtcNow = fixedTime };
+            var rateLimiter = new SmsRateLimiter(1, 100, TimeSpan.FromHours(1), timeProvider);
+            Assert.True(await rateLimiter.CanSendSmsAsync("1111111111"));
+            Assert.False(await rateLimiter.CanSendSmsAsync("1111111111"));
+
+            timeProvider.UtcNow = timeProvider.UtcNow.AddSeconds(1);
+            Assert.True(await rateLimiter.CanSendSmsAsync("1111111111"));
+        }
+
+        [Fact]
+        public async Task CanSendSmsAsync_ExceedAccountLimit_ReturnsFalse()
+        {
+            var fixedTime = new DateTime(2024, 1, 1, 12, 0, 0);
+            var timeProvider = new TestTimeProvider { UtcNow = fixedTime };
+            var rateLimiter = new SmsRateLimiter(100, 1, TimeSpan.FromHours(1), timeProvider);
+            Assert.True(await rateLimiter.CanSendSmsAsync("1111111111"));
+            Assert.False(await rateLimiter.CanSendSmsAsync("2222222222"));
+        }
+
+        [Fact]
         public async Task Multithread_BothLimitsEnforcedSimultaneously()
         {
-            int phoneLimit = 100;
-            int accountLimit = 2000;
+            int phoneLimit = 99;
+            int accountLimit = 450;
             var phoneNumbers = new[] { "1111111111", "2222222222", "3333333333", "4444444444", "5555555555" };
-            int requestsPerPhone = 300;
+            int requestsPerPhone = 100;
 
             var fixedTime = new DateTime(2024, 1, 1, 12, 0, 0);
             var timeProvider = new TestTimeProvider { UtcNow = fixedTime };

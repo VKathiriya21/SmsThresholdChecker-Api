@@ -36,7 +36,7 @@ namespace SmsThresholdChecker.Api.Services
                     }
                 }
 
-                if (oldCount >= limit)
+                if (_countPerSecond >= limit)
                 {
                     return 0;
                 }
